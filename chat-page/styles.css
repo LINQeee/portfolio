@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body > img{
+    position: absolute;
+    height: 150vh;
+    filter: brightness(50%);
+}
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo{
+    margin-right: 14vw;
+    font-size: 2em;
+    color: #359381;
+    pointer-events: none;
+}
+
+.logo img{
+    width: 70px;
+    margin-bottom: -22px;
+    margin-right: 20px;
+}
+.navigation a{
+    text-decoration: none;
+    color: #359381;
+    padding: 6px 15px;
+    border-radius: 20px;
+    margin: 0px 10px;
+    font-weight: 700;
+    transition: all 0.2s;
+
+}
+
+.navigation a:hover, .navigation a.active{
+    background: #359381;
+    color: #fff;
+}
+
+.avatar{
+    scale: 3;
+    margin-left: 27.6vw;
+    width: 50px;
+    cursor: pointer;
+    color: #54cfc0;
+    transition: all 0.1s;
+}
+
+.avatar:hover{
+    color: #32ffe7;
+    scale: 3.5;
+    margin-left: 28vw;
+}
+
+.avatarMenu{
+    width: 200px;
+    background-color: rgba(0, 113, 113, 0.6);
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    right: 15.5vw;
+    top: 10vh;
+    z-index: -1;
+    border-radius: 15px;
+    transition: all 1s;
+    height: 0px;
+    
+}
+.avatarBox{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 1s;
+    margin-top: 20px;
+}
+
+.hiddenAvatarButton{
+    display: flex;
+    transform: scaleY(0);
+    cursor: pointer;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #359381;
+    width: 200px;
+    height: 50px;
+    border: 0px;
+    margin-bottom: 20px;
+    transition: all 0.5s;
+}
+
+.hiddenAvatarButton:hover{
+    background-color: #54cfc0;
+}
+
+.hiddenAvatarButton i.showIcon{
+    position: absolute;
+    color: #54cfc0;
+    margin-left: 20px;
+    transform: scale(1.8);
+    padding: 2px;
+    transition: all 1s;
+
+}
+
+.hiddenAvatarButton:hover i.showIcon{
+    transform: scale(0);
+}
+
+.hiddenAvatarButton i.hiddenSymbol{
+    position: absolute;
+    z-index: -1;
+    scale: 0;
+    opacity: 0;
+    color: #54cfc0;
+    margin-left: 20px;
+    transition: all 0.5s;
+    transform: translateX(0);
+}
+
+.hiddenAvatarButton:hover i.hiddenSymbol{
+    opacity: 1;
+    scale: 2;
+    transform: translateX(95px);
+}
+
+.hiddenAvatarButton span{
+    display: inline-block;
+    margin-left: 70px;
+}
+
+.chat{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 150vh;
+}
+.messages{
+    position: relative;
+    height: 1200px;
+    width: 700px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.messages .imageBackground{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.messages .imageBackground img{
+    margin-left: -600px;
+    margin-top: -120px;
+    height: 150vh;
+    position: static;
+    filter: brightness(120%);
+    filter: blur(5px);
+}
