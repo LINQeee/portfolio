@@ -10,23 +10,114 @@ body{
     font-family: 'Poppins', sans-serif;
 }
 
+.emailContainer input{
+    position: absolute;
+    top: 72%;
+    width: 60%;
+    height: 8%;
+    border-radius: 50px;
+    font-size: 4em;
+    letter-spacing: 3.5vw;
+    font-weight: 700;
+    text-align: center;
+}
+
+#emailSubmit{
+    position: absolute;
+    top: 85%;
+    background-color: #aeeafd;
+    color: #470b9a;
+}
+
+#emailSubmit:hover{
+    background-color: #122a32;
+    color: #bafffd;
+}
+
+#emailHeader{
+    color: #aeeafd;
+    font-weight: 600;
+    font-size: 2em;
+    position: absolute;
+    top: 55%;
+}
+
+.emailContainer{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70vw;
+    height: 85vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 50;
+    border-radius: 35px;
+}
+
+.emailContainer i{
+    color: #aeeafd;
+    scale: 15;
+}
+
+#emailIcon{
+    position: absolute;
+    scale: 0;
+    top: 50%;
+    animation: 1s ease-in 1s forwards emailFlyOut;
+    z-index: 10;
+}
+
+@keyframes emailFlyOut{
+    0%{scale: 0; top: 50%;}
+    70%{scale: 25;}
+    100%{scale: 20; top: 30%;}
+}
+
+#truck{
+ position: absolute;
+ left: 0;
+ scale: 0;   
+ animation: 3s ease truckDrive;
+ z-index: 9;
+ color: #64a4b7;
+}
+
+@keyframes truckDrive{
+    0%{scale: 0; left: 0%;}
+    50%{scale: 15;left: 50%;}
+    100%{scale: 0; left: 100%;}
+}
+
+.noteContainer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: column;
+    transition: all 3s;
+}
+
+
+
+.noteContainer .errorNotification, .succesNotification{
+    margin-bottom: 50px;
+}
+
 .succesNotification, .errorNotification{
     width: 300px;
     height: 120px;
-    position: absolute;
+    position: relative;
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
     top: 130px;
     left: -300px;
     border-radius: 15px;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     z-index: 100;
-}
-
-.succesNotification{
-    margin-top: 200px;
+    transition: all 3s;
 }
 
 .noteHeader{
@@ -56,7 +147,6 @@ body{
 
 .noteMessage{
     color: #fff;
-    margin-left: 20px;
     font-size: 0.9em;
     margin-top: 10px;
 }
@@ -79,9 +169,14 @@ body{
     background-color: #cb2727;
 }
 
-@keyframes noteMove{
+@keyframes noteMoveUp{
     0%{left: -300px;}
     100%{left: 40px;}
+}
+
+@keyframes noteMoveDown{
+    0%{left: 40px;}
+    100%{left: -300px;}
 }
 
 @keyframes cooldownMove{

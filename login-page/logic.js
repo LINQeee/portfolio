@@ -1,12 +1,13 @@
 const username = document.getElementById("username");
 const signLink = document.getElementById("signLink");
-const usernameInput = document.getElementById("usernameInput");
-const emailInput = document.getElementById("emailInput");
-const passwordInput = document.getElementById("passwordInput");
 const submit = document.getElementById("submit");
 const header = document.getElementById("header");
+const inputData = { "username": document.getElementById("usernameInput"), "email": document.getElementById("emailInput"), "password": document.getElementById("passwordInput") };
 
-var isRegistering;
+var isRegistering = false;
+
+var isErrorNoteMoving = false;
+var isSuccesNoteMoving = false;
 
 function switchToRegister() {
     document.getElementById("email").style.marginTop = "70px";
@@ -29,91 +30,183 @@ function switchToSigning() {
     signLink.innerHTML = "Sign Up";
     signLink.setAttribute("onclick", "switchToRegister()");
 
-    usernameInput.value = '';
+    inputData["username"].getAttribute("value").value = '';
 
     submit.innerHTML = "login";
     header.innerHTML = "Login to Your Account";
     isRegistering = false;
 }
 
+
+
+function trySign() {
+    if(isRegistering && inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0 && inputData["username"].getAttribute("value").length != 0) {
+        tryRegister();
+    }
+    else if(inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0){
+        tryLogin();
+    }
+}
+
+function sendEmail(adress, subject, text){
+    fetch('http://192.168.1.98:8090/email', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "to": adress, "subject": subject, "text": text })
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+            }).catch(function (error) {
+            console.log('request failed', error)
+        });
+}
+
+function tryRegister(){
+    sendEmail(inputData["email"].getAttribute("value"), "Here is your verefication code: " + Math.floor(100000 + Math.random() * 900000));
+
+    fetch('http://192.168.1.98:8090/user', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "username": inputData["username"].getAttribute("value"), "email": inputData["email"].getAttribute("value"), "password": inputData["password"].getAttribute("value") })
+        })
+            .then(response => response.text())
+            .then(data => {
+                registerSucces();
+            }).catch(function (error) {
+            console.log('request failed', error)
+            registerFail();
+        });
+}
+
+function tryLogin(){
+    console.log("LOGINNING");
+        let params = {"email": inputData["email"].getAttribute("value")};
+        let query = Object.keys(params)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+             .join('&');
+
+        let url = 'http://192.168.1.98:8090/user?' + query;
+
+        fetch(url)
+        .then(response => response.json())
+        .then((data) => {
+            console.log('request succeeded with JSON response', data)
+
+            if(data["email"] == inputData["email"].getAttribute("value") && data["password"] == inputData["password"].getAttribute("value")){
+                loginSucces(data ,"Succes!", "Your account has been created successfuly!");
+            }
+            else{
+                loginFail("Error!", "We couldn't create an account!");
+            }
+        }).catch(function (error) {
+            console.log('request failed', error)
+        });
+}
+
+async function registerSucces(){
+    showNotification("succesNote", "succesCooldown", header, msg);
+    console.log(document.getElementById("remember").checked);
+    if(document.getElementById("remember").checked){
+        createCookie("email", data["email"]);
+        createCookie("password", data["password"]);
+        createCookie("username", data["username"]);
+    }
+    await sleep(4900);
+    window.history.go(-1);
+}
+
+async function registerFail(){
+
+}
+
+async function loginSucces(data, msg, header) {
+    sendEmail(data["email"], "Security code", "Here is your verefication code: " + Math.floor(100000 + Math.random() * 900000));
+    showNotification("succesNote", "succesCooldown", header, msg);
+    console.log(document.getElementById("remember").checked);
+    if(document.getElementById("remember").checked){
+        createCookie("email", data["email"]);
+        createCookie("password", data["password"]);
+        createCookie("username", data["username"]);
+    }
+    await sleep(4900);
+    window.history.go(-1);
+}
+
+async function loginFail(msg, header) {
+    showNotification("errorNote", "errorCooldown", header, msg);
+    await sleep(4900);
+}
+
+async function showNotification(noteId, coolDownId, noteHeader, noteMessage) {
+    if(noteId == "errorNote" && isErrorNoteMoving == false) isErrorNoteMoving = true;
+    else if(noteId == "succesNote" && isSuccesNoteMoving == false) isSuccesNoteMoving = true;
+    else return;
+    var note = document.getElementById(noteId);
+    var cooldown = document.getElementById(coolDownId);
+    note.querySelector(".noteHeader").innerHTML = noteHeader;
+    note.querySelector(".noteMessage").innerHTML = noteMessage;
+    note.style.display = "flex";
+    note.style.animation = "1s ease forwards noteMoveUp";
+    cooldown.style.animation = "3s linear 0.5s reverse forwards cooldownMove";
+    await sleep(3900);
+    note.style.animation = "1s ease forwards noteMoveDown";
+    await sleep(1000);
+    cooldown.style.width = "300px";
+    note.style.display = "none";
+    if(noteId == "errorNote") isErrorNoteMoving = false;
+    else isSuccesNoteMoving = false;
+}
+
+function createCookie(cookieName, cookieValue){
+    var expires = (new Date(Date.now()+ 86400*4000)).toUTCString();
+    document.cookie = cookieName+'='+cookieValue+'; expires=' + expires + ';path=/';
+    console.log("cookie created");
+}
+
+
+
 function setValue(id, isPassowrd) {
     var newValue;
     var element = document.getElementById(id);
     var inputValue = element.value;
-    if(inputValue.length > element.getAttribute("value").length){
-    newValue = element.getAttribute("value") + inputValue[inputValue.length-1];
+
+    if (isPassowrd) {
+        if (inputValue.length > element.getAttribute("value").length) {
+            newValue = element.getAttribute("value") + inputValue[inputValue.length - 1];
+        }
+        else {
+            newValue = element.getAttribute("value").slice(0, element.getAttribute("value").length - 1);
+        }
+        var newInputValue = newValue;
+        element.setAttribute("value", newValue);
+
+        for (let index = 0; index < element.getAttribute("value").length; index++) {
+            newInputValue = setCharAt(newInputValue, index, "●");
+
+        }
+        element.value = newInputValue;
     }
-    else{
-    newValue = element.getAttribute("value").slice(0, element.getAttribute("value").length-1);
+    else {
+        element.setAttribute("value", inputValue);
     }
-    var newInputValue = newValue;
-    element.setAttribute("value", newValue); 
-    if(isPassowrd){
-    for (let index = 0; index < element.getAttribute("value").length; index++) {
-        newInputValue = setCharAt(newInputValue, index, "●");
-        
-    }}
-    element.value = newInputValue;
-}
 
-function setCharAt(str,index,chr) {
-    if(index > str.length-1) return str;
-    return str.substring(0,index) + chr + str.substring(index+1);
-}
-
-function tryLogin() {
-    if(isRegistering){
-        var ajaxRequest;
-        ajaxRequest = $.ajax({
-            url: "/DataBaseServices/registerNewUser.php",
-            type: "post",
-            data: JSON.stringify([{"functionName": "insert"},{"dbName": "usersData","username": usernameInput ,"email": emailInput, "password": passwordInput}]),
-            contentType: "application/json; charset=utf-8",
-            traditional: true
-        });
-
-        ajaxRequest.done(function(response, textStatus, jqXHR){
-            console.log(response, textStatus);
-            registerSucces();
-        });
-
-        ajaxRequest.fail(function(){
-            console.log("error");
-            registerFail();
-        });
-    }
-    return false;
-}
-
-async function registerSucces() {
-    var succesNote = document.getElementById("succesNote");
-    var succesCooldown = document.getElementById("succesCooldown");
-    succesNote.style.animation = "noteMove forwards";
-    succesNote.style.animationTimingFunction = "ease";
-    succesNote.style.animationDuration = "3s";
-    succesCooldown.style.animationDelay = "3s";
-    succesCooldown.style.animation = "cooldownMove reverse forwards";
-    succesCooldown.style.animationTimingFunction = "linear";
-    succesCooldown.style.animationDuration = "5s";
-    await setTimeout(8000);
-    succesNote.style.animation = "noteMove reverse forwards";
-    await setTimeout(3000);
-    succesCooldown.style.width = "300px";
 
 }
 
-async function registerFail() {
-    var errorNote = document.getElementById("errorNote");
-    var errorCooldown = document.getElementById("errorCooldown");
-    errorNote.style.animation = "noteMove forwards";
-    errorNote.style.animationTimingFunction = "ease";
-    errorNote.style.animationDuration = "3s";
-    errorCooldown.style.animationDelay = "3s";
-    errorCooldown.style.animation = "cooldownMove reverse forwards";
-    errorCooldown.style.animationTimingFunction = "linear";
-    errorCooldown.style.animationDuration = "5s";
-    await setTimeout(8000);
-    errorNote.style.animation = "noteMove reverse forwards";
-    await setTimeout(3000);
-    errorCooldown.style.width = "300px";
+function setCharAt(str, index, chr) {
+    if (index > str.length - 1) return str;
+    return str.substring(0, index) + chr + str.substring(index + 1);
 }
+
+const sleep = async (milliseconds) => {
+    await new Promise(resolve => {
+        return setTimeout(resolve, milliseconds)
+    });
+};

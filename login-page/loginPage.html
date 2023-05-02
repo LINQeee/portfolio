@@ -11,22 +11,32 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
-    <img src="/images/loginBackground.jpg" alt="">
-    <div id="succesNote" class="succesNotification">
-        <div class="noteHeader">Successful!</div>
-        <div class="line"></div>
-        <div class="noteMessage">Your account has been created successfuly!</div>
-        <div id="succesCooldown" class="cooldown"></div>
+    <div class="emailContainer">
+        <i id="emailIcon" class="fa-solid fa-envelopes-bulk"></i>
+        <i id="truck" class="fa-solid fa-truck-fast"></i>
+        <div id="emailHeader">Check your email and write in the security code</div>
+        <input id="vereficationCode" type="text" maxlength="6">
+        <button id="emailSubmit" >SUBMIT</button>
+        
     </div>
-    <div id="errorNote" class="errorNotification">
-        <div class="noteHeader">Error!</div>
-        <div class="line"></div>
-        <div class="noteMessage">We couldn't create an account!</div>
-        <div id="errorCooldown" class="cooldown"></div>
+    <img src="/images/loginBackground.jpg" alt="">
+    <div class="noteContainer">
+        <div id="succesNote" class="succesNotification">
+            <div class="noteHeader">Successful!</div>
+            <div class="line"></div>
+            <div class="noteMessage">Your account has been created successfuly!</div>
+            <div id="succesCooldown" class="cooldown"></div>
+        </div>
+        <div id="errorNote" class="errorNotification">
+            <div class="noteHeader">Error!</div>
+            <div class="line"></div>
+            <div class="noteMessage">We couldn't create an account!</div>
+            <div id="errorCooldown" class="cooldown"></div>
+        </div>
     </div>
     <div class="mainBox">
         <span id="header" class="header">Login to Your Account</span>
-        <form>
+        <form onsubmit="return false">
         <div id="username" class="formItem">
             <i class="fa-regular fa-user"></i>
             <input id="usernameInput" type="text" oninput="setValue('usernameInput', false)" type="text" required value="" spellcheck="false" maxlength="20" autocomplete="off">
@@ -55,7 +65,7 @@
             </div>
         </div>
         <div class="button">
-        <button id="submit" type="submit" onclick="tryLogin()">login</button>
+        <button id="submit" type="submit" onclick="trySign()">login</button>
         </div>
         </form>
     </div>

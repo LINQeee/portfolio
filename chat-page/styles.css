@@ -64,12 +64,20 @@ header{
     cursor: pointer;
     color: #54cfc0;
     transition: all 0.1s;
+    text-align: center;
 }
 
 .avatar:hover{
     color: #32ffe7;
     scale: 3.5;
     margin-left: 28vw;
+}
+
+#username{
+    color: #32ffe7;
+    font-weight: 800;
+    font-size: 10px;
+   
 }
 
 .avatarMenu{
@@ -81,8 +89,8 @@ header{
     justify-content: center;
     flex-direction: column;
     position: absolute;
-    right: 15.5vw;
-    top: 10vh;
+    right: 12.5vw;
+    top: 13vh;
     z-index: -1;
     border-radius: 15px;
     transition: all 1s;
