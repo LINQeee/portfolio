@@ -11,15 +11,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
-    <div class="emailContainer">
+   <!-- <button onclick="showEmailWindow()" style="position:absolute; left: 0; z-index: 1000;">TEST BUTTON</button>-->
+    <div id="emailBox" class="emailContainer">
         <i id="emailIcon" class="fa-solid fa-envelopes-bulk"></i>
         <i id="truck" class="fa-solid fa-truck-fast"></i>
         <div id="emailHeader">Check your email and write in the security code</div>
-        <input id="vereficationCode" type="text" maxlength="6">
-        <button id="emailSubmit" >SUBMIT</button>
+        <input id="verificationCode" type="number" oninput="setValue('verificationCode', false)" onKeyPress="if(this.value.length==6) return false;" required value="" spellcheck="false" autocomplete="off">
+        <button id="emailSubmit" onclick="verificationCodeCheck()">SUBMIT</button>
         
     </div>
-    <img src="/images/loginBackground.jpg" alt="">
     <div class="noteContainer">
         <div id="succesNote" class="succesNotification">
             <div class="noteHeader">Successful!</div>
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="button">
-        <button id="submit" type="submit" onclick="trySign()">login</button>
+        <button id="submit" type="submit" onclick="submitForm()">login</button>
         </div>
         </form>
     </div>
