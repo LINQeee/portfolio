@@ -1,13 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/globalStyles/emailStyles.css">
+    <link rel="stylesheet" href="/globalStyles/noteStyles.css">
+    <script src="https://kit.fontawesome.com/acaa438d26.js" crossorigin="anonymous"></script>
+
 </head>
+
 <body>
-    
+    <div class="noteContainer">
+        <div id="succesNote" class="succesNotification">
+            <div class="noteHeader">Successful!</div>
+            <div class="line"></div>
+            <div class="noteMessage">Your account has been created successfuly!</div>
+            <div id="succesCooldown" class="cooldown"></div>
+        </div>
+        <div id="errorNote" class="errorNotification">
+            <div class="noteHeader">Error!</div>
+            <div class="line"></div>
+            <div class="noteMessage">We couldn't create an account!</div>
+            <div id="errorCooldown" class="cooldown"></div>
+        </div>
+    </div>
+    <div id="moveTarget" class="blobBox">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" id="blobSvg"
+            filter="blur(0px)" style="opacity: 1;">
+            <path id="blob" fill="url(#gradient)" style="opacity: 1;">
+                <animate attributeName="d" dur="5000ms" repeatCount="indefinite"
+                    values="
+        M440.5,320.5Q418,391,355.5,442.5Q293,494,226,450.5Q159,407,99,367Q39,327,31.5,247.5Q24,168,89,125.5Q154,83,219.5,68Q285,53,335.5,94.5Q386,136,424.5,193Q463,250,440.5,320.5Z;M453.78747,319.98894Q416.97789,389.97789,353.96683,436.87838Q290.95577,483.77887,223.95577,447.43366Q156.95577,411.08845,105.64373,365.97789Q54.33169,320.86732,62.67444,252.61056Q71.01719,184.3538,113.01965,135.21007Q155.02211,86.06634,220.52211,66.46683Q286.02211,46.86732,335.5,91.94472Q384.97789,137.02211,437.78747,193.51106Q490.59704,250,453.78747,319.98894Z;M411.39826,313.90633Q402.59677,377.81265,342.92059,407.63957Q283.24442,437.46649,215.13648,432.5428Q147.02853,427.61911,82.23325,380.9572Q17.43796,334.29529,20.45223,250.83809Q23.46649,167.38089,82.5856,115.05707Q141.70471,62.73325,212.19045,63.73015Q282.67618,64.72705,352.67308,84.79839Q422.66998,104.86972,421.43486,177.43486Q420.19974,250,411.39826,313.90633Z;M440.5,320.5Q418,391,355.5,442.5Q293,494,226,450.5Q159,407,99,367Q39,327,31.5,247.5Q24,168,89,125.5Q154,83,219.5,68Q285,53,335.5,94.5Q386,136,424.5,193Q463,250,440.5,320.5Z;">
+                </animate>
+            </path>
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color: rgb(42, 144, 254);"></stop>
+                    <stop offset="100%" style="stop-color: rgb(225, 24, 251);"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <div id="emailBox" class="emailContainer">
+        <i id="emailIcon" class="fa-solid fa-envelopes-bulk"></i>
+        <i id="truck" class="fa-solid fa-truck-fast"></i>
+        <div id="emailHeader">Check your email and write in the security code</div>
+        <input id="verificationCode" type="number" oninput="setValue(this, false)"
+            onKeyPress="if(this.value.length==6) return false;" required value="" spellcheck="false" autocomplete="off">
+        <button id="emailSubmit" onclick="verificationCodeCheck()">SUBMIT</button>
+
+    </div>
+    <div class="mainBox">
+        <div class="boxHead">
+            <i class="fa-solid fa-key">
+                <i class="fa-solid fa-shield-halved"></i>
+            </i>
+
+            <div class="headerText">Forgot Your Password?</div>
+            <span>Enter your email and we'll change your password.</span>
+        </div>
+        <form onsubmit="return false" class="boxForm" autocomplete="off">
+            <div class="formInput">
+                <input id="emailInput" type="text" oninput="setValue(this, false)" required value=""
+                    spellcheck="false" autocomplete="off">
+                <i class="fa-solid fa-envelope"></i>
+                <span class="inputHead">Your Email</span>
+            </div>
+            <div class="formInput">
+                <input id="newPswInput" type="text" oninput="setValue(this, true)" required data-is-shown="false"
+                    value="" autocomplete="nope" spellcheck="false" maxlength="20">
+                <i class="fa-solid fa-unlock"></i>
+                <span class="inputHead">New Password</span>
+                <button class="shownButton" type="button" onclick="setIsChange('newPswInput', this)">
+                    <i class="fa-sharp fa-solid fa-eye-slash shownToggle"></i>
+                </button>
+            </div>
+            <div class="formInput">
+                <input id="newPswConfirmInput" type="text" oninput="setValue(this, true)" required data-is-shown="false"
+                    value="" autocomplete="nope" spellcheck="false" maxlength="20">
+                <i class="fa-solid fa-lock"></i>
+                <span class="inputHead">Confirm Password</span>
+                <button class="shownButton" type="button" onclick="setIsChange('newPswConfirmInput', this)">
+                    <i class="fa-sharp fa-solid fa-eye-slash shownToggle"></i>
+                </button>
+            </div>
+            <button type="submit" onclick="submitForm()">Confirm</button>
+        </form>
+    </div>
+
+    <script src="/globalJavaScript/divMove.js"></script>
+    <script src="logic.js"></script>
+    <script src="/globalJavaScript/InputSave.js"></script>
+
 </body>
+
 </html>

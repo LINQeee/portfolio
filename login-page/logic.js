@@ -15,150 +15,135 @@ isRegistering = false;
 //* /DATA BASE SERVICES///////////////////////////////////////
 //* //////////////////////////////////////////////////////////
 //* //////////////////////////////////////////////////////////
-function createCookie(cookieName, cookieValue, expireTime){
-    var expires = (new Date(Date.now()+ expireTime)).toUTCString();
-    document.cookie = cookieName+'='+cookieValue+'; expires=' + expires + ';path=/';
+function createCookie(cookieName, cookieValue, expireTime) {
+    var expires = (new Date(Date.now() + expireTime)).toUTCString();
+    document.cookie = cookieName + '=' + cookieValue + '; expires=' + expires + ';path=/';
     console.log("cookie created");
 }
 
 //*ON CLICK SUBMIT BUTTON//////////////
 function submitForm() {
-    if(isRegistering && inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0 && inputData["username"].getAttribute("value").length != 0) {
+    if (isRegistering && inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0 && inputData["username"].getAttribute("value").length != 0) {
         registerUser();//*if registering
     }
-    else if(inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0){
+    else if (inputData["email"].getAttribute("value").length != 0 && inputData["password"].getAttribute("value").length != 0) {
         checkIsPasswordCorrect();//* if loginning
     }
 }
 
-function registerUser(){
-    fetch('http://192.168.1.98:8090/user', {
+function registerUser() {
+    fetch('http://localhost:8080/api/user/new-user', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"email": inputData["email"].getAttribute("value"), "password": inputData["password"].getAttribute("value"), "username": inputData["username"].getAttribute("value")})
+        body: JSON.stringify({ "email": inputData["email"].getAttribute("value"), "password": inputData["password"].getAttribute("value"), "username": inputData["username"].getAttribute("value") })
     })
         .then(response => {
-            if(response["status"] == 200){
+            if (response["status"] == 200) {
                 sendEmailAndCode();
-                showNotification("succes", "Your account has been created, now authorise it with a verification code");
-                response.text().then(data => {console.log(data)});
+                response.text().then(data => {
+                    showNotification("succes", data);
+                    console.log(data);
+                });
             }
-            else if(response["status"] == 500){
-            response.json().then(data => { 
-                if(data["type"] == "UNEXPECTED" && data["message"] == "could not execute statement; SQL [n/a]; constraint [user.email]"){
-                    showNotification("error", "This email is already in use");
-                    console.log(data["message"]);
-                }
-            });
+            else if (response["status"] == 500) {
+                response.json().then(data => {
+                    if (data["type"] != "UNEXPECTED") {
+                        showNotification("error", data["message"]);
+                    }
+                    else {
+                        showNotification("error", "An unexpected error has occurred");
+                    }
+                });
             }
-            else{
+            else {
                 showNotification("error", "An unexpected error has occurred");
             }
         }).catch(function () {
             showNotification("error", "We couldn't create an account");
-    });
+        });
 }
 
-function checkIsPasswordCorrect(){
-    fetch('http://192.168.1.98:8090/check-user', {
+function checkIsPasswordCorrect() {
+    fetch('http://localhost:8080/api/user/check-user-password', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"email": inputData["email"].getAttribute("value"), "password": inputData["password"].getAttribute("value")})
+        body: JSON.stringify({ "email": inputData["email"].getAttribute("value"), "password": inputData["password"].getAttribute("value") })
     })
         .then(response => {
-            if(response["status"] == 200){
+            if (response["status"] == 200) {
                 sendEmailAndCode();
             }
-            else if(response["status"] == 500){
+            else if (response["status"] == 500) {
                 response.json().then(data => {
-                    if(data["type"] == "UNEXPECTED" && data["message"] == "User not found"){
-                        showNotification("error", "The email is wrong, create a new account");
+                    if (data["type"] != "UNEXPECTED") {
+                        showNotification("error", data["message"]);
                     }
-                    else if(data["type"] == "UNEXPECTED" && data["message"] == "Bad password"){
-                        showNotification("error", "The password is wrong, try again");
+                    else {
+                        showNotification("error", "An unexpected error has occurred");
                     }
                 })
             }
-            else{
+            else {
                 showNotification("error", "An unexpected error has occurred");
             }
         })
         .catch(function () {
             showNotification("error", "We couldn't check is password or email match, try again later");
-    });
+        });
 }
 
 
-function verificationCodeCheck(){
-    fetch('http://192.168.1.98:8090/check-code', {
+function verificationCodeCheck() {
+    fetch('http://localhost:8080/api/user/check-user-code', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"code": document.getElementById("verificationCode").getAttribute("value"), "email": inputData["email"].getAttribute("value")})
+        body: JSON.stringify({ "code": document.getElementById("verificationCode").getAttribute("value"), "email": inputData["email"].getAttribute("value") })
     })
         .then(response => {
-            if(response["status"] == 200){
-                response.text().then(data => {console.log(data)});
+            if (response["status"] == 200) {
+                response.text().then(data => { console.log(data) });
                 var expireTime;
-                if(document.getElementById("remember").checked)
-                expireTime = 86400*4000;
+                if (document.getElementById("remember").checked)
+                    expireTime = 86400 * 4000;
                 else expireTime = 100000;
-                emailResponse = getUserByEmail(inputData["email"].getAttribute("value")).then(userData => {
+                
+                getUserByEmail(inputData["email"].getAttribute("value")).then(userData => {
                     createCookie("username", userData["username"], expireTime);
                     createCookie("email", userData["email"], expireTime);
                     createCookie("password", userData["password"], expireTime);
                     window.history.go(-1);
                 });
-                if(emailResponse["status"] == 200){
-                    emailResponse.then(userData => {
-                        createCookie("username", userData["username"], expireTime);
-                        createCookie("email", userData["email"], expireTime);
-                        createCookie("password", userData["password"], expireTime);
-                        window.history.go(-1);
-                    });
-                }
-                else if(emailResponse["status"] == 500){
-                    emailResponse.then(errorData => {
-                        if(errorData["message"] == "No value present"){
-                            showNotification("error", "It seems that an account with this email doesn't exist");
-                        }
-                    });
-                }
-                else{
-                    showNotification("error", "An unexpected error has occurred");
-                }
-                
+
             }
-            else if(response["status"] == 500){
-                response.json().then(data => { 
-                    if(data["type"] == "UNEXPECTED" && data["message"] == "Bad code"){
-                        showNotification("error", "The code doesn't match");
-                        console.log(data["message"]);
-                    }
-                    else if(data["type"] == "UNEXPECTED" && data["message"] == "No value present"){
-                        showNotification("error", "An unexpected error has occurred");
-                        console.log(data["message"]);
-                    }
+            else if (response["status"] == 500) {
+                response.json().then(data => {
+                            if (data["type"] != "UNEXPECTED") {
+                                showNotification("error", data["message"]);
+                            }
+                            else {
+                                showNotification("error", "An unexpected error has occurred");
+                            }
                 });
             }
-            
+
         }).catch(function (error) {
             console.log(error);
             showNotification("error", "We couldn't compare code, try again later");
-    });
+        });
 }
 
 
-function sendEmailAndCode(){
-    fetch('http://192.168.1.98:8090/send-code', {
+function sendEmailAndCode() {
+    fetch('http://localhost:8080/api/code/send-code', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -167,18 +152,20 @@ function sendEmailAndCode(){
         body: inputData["email"].getAttribute("value")
     })
         .then(response => {
-            if(response["status"] == 200){
+            if (response["status"] == 200) {
                 showEmailWindow();
             }
-            else if(response["status"] == 500){
-                response.json().then(data => { 
-                    if(data["type"] == "UNEXPECTED"){
-                        showNotification("error", "We couldn't send an email, cause internal server error");
-                        console.log(data["message"]);
+            else if (response["status"] == 500) {
+                response.json().then(data => {
+                    if (data["type"] != "UNEXPECTED") {
+                        showNotification("error", data["message"]);
+                    }
+                    else {
+                        showNotification("error", "An unexpected error has occurred");
                     }
                 });
             }
-            else{
+            else {
                 showNotification("error", "An unexpected error has occurred");
             }
         }).catch(function () {
@@ -186,9 +173,8 @@ function sendEmailAndCode(){
         });
 }
 
-async function getUserByEmail(email){
-    email = "adrianvved@gmail.com";
-    return fetch('http://192.168.1.98:8090/user/email', {
+async function getUserByEmail(email) {
+    return fetch('http://localhost:8080/api/user/get-user', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -197,15 +183,19 @@ async function getUserByEmail(email){
         body: email
     })
         .then(response => {
-            if(response["status"] == 200){
+            if (response["status"] == 200) {
                 return response.json().then(data => {
                     return data;
                 })
             }
-            else if(response["status"] == 500){
-                response.json().then(data => { 
-                    console.log(data["message"]);
-                    return data;
+            else if (response["status"] == 500) {
+                response.json().then(data => {
+                    if (data["type"] != "UNEXPECTED") {
+                        showNotification("error", data["message"]);
+                    }
+                    else {
+                        showNotification("error", "An unexpected error has occurred");
+                    }
                 })
             }
         }).catch(function (error) {
@@ -228,16 +218,16 @@ const sleep = async (milliseconds) => {
 
 
 
-
-function showEmailWindow(){
+function showEmailWindow() {
     let inputs = document.getElementsByTagName("input");
-    for(let input of inputs){
+    for (let input of inputs) {
         input.setAttribute("tabindex", "-1");
     }
     document.getElementById("emailBox").style.scale = "1";
     document.getElementById("emailIcon").style.animation = "1s ease-in 1s forwards emailFlyOut";
     document.getElementById("truck").style.animation = "3s ease truckDrive";
 }
+
 
 
 //*FOR SWITCH BUTTON////////////////////////////////////////////////////
@@ -276,13 +266,13 @@ async function showNotification(noteType, noteMessage) {
     let noteId;
     let coolDownId;
     let noteHeader;
-    if(noteType.toLowerCase() == "error" && isErrorNoteMoving == false){
+    if (noteType.toLowerCase() == "error" && isErrorNoteMoving == false) {
         noteId = "errorNote";
         coolDownId = "errorCooldown";
         noteHeader = "Oops, something went wrong!";
         isErrorNoteMoving = true;
     }
-    else if(noteType.toLowerCase() == "succes" && isSuccesNoteMoving == false){
+    else if (noteType.toLowerCase() == "succes" && isSuccesNoteMoving == false) {
         noteId = "succesNote";
         coolDownId = "succesCooldown";
         noteHeader = "Succes!";
@@ -305,37 +295,4 @@ async function showNotification(noteType, noteMessage) {
     else isSuccesNoteMoving = false;
 }
 
-//*save input value in attribute////////////////////////////////////////////////
-function setValue(id, isPassowrd) {
-    var newValue;
-    var element = document.getElementById(id);
-    var inputValue = element.value;
 
-    if (isPassowrd) {
-        if (inputValue.length > element.getAttribute("value").length) {
-            newValue = element.getAttribute("value") + inputValue[inputValue.length - 1];
-        }
-        else {
-            newValue = element.getAttribute("value").slice(0, element.getAttribute("value").length - 1);
-        }
-        var newInputValue = newValue;
-        element.setAttribute("value", newValue);
-
-        for (let index = 0; index < element.getAttribute("value").length; index++) {
-            newInputValue = setCharAt(newInputValue, index, "●");
-
-        }
-        element.value = newInputValue;
-    }
-    else {
-        element.setAttribute("value", inputValue);
-    }
-
-
-}
-
-function setCharAt(str, index, chr) {
-    if (index > str.length - 1) return str;
-    return str.substring(0, index) + chr + str.substring(index + 1);
-}
-//* //////////////////////////////////////////////////////////////////////////////////////

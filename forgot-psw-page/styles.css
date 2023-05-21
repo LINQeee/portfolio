@@ -1,4 +1,219 @@
-body{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Sigmar&display=swap');
+
+body {
     background-image: url(/images/forgot-psw-background.jpg);
     background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+.mainBox {
+    padding: 10px;
+    backdrop-filter: blur(15px);
+    border-radius: 50px;
+    width: 650px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: #8feaf8 solid 2px;
+}
+
+.mainBox::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .4;
+    z-index: -1;
+    border-radius: 50px;
+    background: linear-gradient(250deg, rgb(19, 68, 121) 0%, rgb(105, 12, 117) 100%);
+
+}
+
+.boxHead {
+    width: 100%;
+    height: 35%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.boxHead i {
+    margin-top: 6%;
+    box-sizing: border-box;
+}
+
+.boxHead .fa-key {
+    scale: 3.5;
+    margin-left: -20px;
+    color: rgb(143, 234, 248);
+    z-index: 100;
+}
+
+.boxHead .fa-shield-halved {
+    position: absolute;
+    scale: 0.9;
+    margin-top: 5px;
+    margin-left: -10px;
+    color: rgb(59, 0, 111);
+    transform: scaleX(-1);
+}
+
+
+.headerText {
+    color: rgb(143, 234, 248);
+    margin-top: 8%;
+    font-weight: 600;
+    font-size: 2em;
+    pointer-events: none;
+}
+
+.boxHead span {
+    color: rgb(143, 234, 248);
+    margin-top: 2%;
+    pointer-events: none;
+}
+
+.boxForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: -2%;
+}
+
+.formInput {
+    box-sizing: border-box;
+    background: rgba(143, 234, 248, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 40px;
+    border-radius: 40px;
+    margin-top: 50px;
+    transition: all 0.4s;
+}
+
+.formInput input {
+    width: 80%;
+    height: 80%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 1.3em;
+}
+
+.shownButton {
+    width: 35px;
+    height: 35px;
+    background: transparent;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 9%;
+    border: none;
+    cursor: pointer;
+}
+
+.shownButton:active {
+    cursor: grabbing;
+}
+
+.shownToggle {
+    margin-left: 4px;
+    transition: all 0.3s;
+}
+
+.shownButton:hover>.shownToggle {
+    color: rgba(59, 0, 111, 0.5);
+}
+
+.formInput i {
+    scale: 1.7;
+    color: rgb(59, 0, 111);
+    position: absolute;
+    left: 10%;
+}
+
+.formInput .inputHead {
+    color: rgb(59, 0, 111);
+    font-weight: 600;
+    position: absolute;
+    left: 15%;
+    pointer-events: none;
+    transition: all 0.6s;
+    font-size: 1em;
+}
+
+.formInput:has(> input[type="text"]:focus), .formInput:has(> input[type="text"]:valid) {
+    background: rgba(143, 234, 248, 1);
+}
+
+.mainBox input[type="text"]:focus~.inputHead, .mainBox input[type="text"]:valid~.inputHead {
+    transform: translate(-50px, -38px);
+    color: rgb(143, 234, 248);
+}
+
+.boxForm button[type=submit] {
+    position: fixed;
+    bottom: 7%;
+    width: 45%;
+    height: 10%;
+    border-radius: 30px;
+    border: none;
+    background: rgb(143, 234, 248);
+    color: rgb(105, 12, 117);
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.1em;
+    font-weight: 700;
+    transition: all 0.35s;
+    cursor: pointer;
+}
+
+.boxForm button[type=submit]:hover {
+    background: rgb(35, 70, 75);
+    color: rgb(163, 92, 255);
+    scale: 1.1;
+}
+
+.boxForm button[type=submit]:active {
+    scale: 0.85;
+    cursor: grabbing;
+}
+
+.blobBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scale: 2;
+    position: absolute;
+    z-index: -50;
+    transition: left 0.1s, top 0.1s, scale 0.6s, opacity 0.1s;
+}
+
+.blobBox:before {
+    content: "";
+    z-index: -100;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(0deg, #560349 0%, #c834e4 50%, #3849cd 100%);
+    transform: translate3d(0px, 20px, 0) scale(0.95);
+    filter: blur(60px);
+    opacity: var(0.7);
+    transition: opacity 0.3s;
+    border-radius: 100px;
 }

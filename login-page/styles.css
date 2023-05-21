@@ -12,188 +12,6 @@ body{
     background-size: cover;
 }
 
-.emailContainer input{
-    position: absolute;
-    top: 72%;
-    width: 60%;
-    height: 8%;
-    border-radius: 50px;
-    font-size: 4em;
-    letter-spacing: 3.5vw;
-    font-weight: 700;
-    text-align: center;
-}
-
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-#emailSubmit{
-    position: absolute;
-    top: 85%;
-    background-color: #aeeafd;
-    color: #470b9a;
-}
-
-#emailSubmit:hover{
-    background-color: #122a32;
-    color: #bafffd;
-}
-
-#emailHeader{
-    color: #aeeafd;
-    font-weight: 600;
-    font-size: 2em;
-    position: absolute;
-    top: 55%;
-}
-
-.emailContainer{
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70vw;
-    height: 85vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    z-index: 50;
-    border-radius: 35px;
-    scale: 0;
-    transition: all 0.6s;
-}
-
-.emailContainer i{
-    color: #aeeafd;
-    scale: 15;
-}
-
-#emailIcon{
-    position: absolute;
-    scale: 0;
-    top: 50%;
-    z-index: 10;
-}
-
-@keyframes emailFlyOut{
-    0%{scale: 0; top: 50%;}
-    70%{scale: 25;}
-    100%{scale: 20; top: 30%;}
-}
-
-#truck{
- position: absolute;
- left: 0;
- scale: 0;   
- 
- z-index: 9;
- color: #64a4b7;
-}
-
-@keyframes truckDrive{
-    0%{scale: 0; left: 0%;}
-    50%{scale: 15;left: 50%;}
-    100%{scale: 0; left: 100%;}
-}
-
-.noteContainer{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    display: flex;
-    flex-direction: column;
-    transition: all 3s;
-}
-
-
-
-.noteContainer .errorNotification, .succesNotification{
-    margin-bottom: 50px;
-}
-
-.succesNotification, .errorNotification{
-    width: 300px;
-    height: 120px;
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
-    top: 130px;
-    left: -300px;
-    border-radius: 15px;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    z-index: 100;
-    transition: all 3s;
-}
-
-.noteHeader{
-    font-size: 1.3em;
-}
-
-.succesNotification .noteHeader{
-    color: #3fa837;
-}
-
-.errorNotification .noteHeader{
-    color: #cb2727;
-}
-
-.line{
-    width: 100%;
-    height: 2px;
-}
-
-.succesNotification .line{
-    background-color: #067a23;
-}
-
-.errorNotification .line{
-    background-color: #cb2727;
-}
-
-.noteMessage{
-    color: #fff;
-    font-size: 0.9em;
-    margin-top: 10px;
-}
-
-.cooldown{
-    position: fixed;
-    height: 6px;
-    width: 300px;
-    
-    bottom: 6px;
-    left: 0;
-    border-radius: 50px;
-}
-
-.succesNotification .cooldown{
-    background-color: #067a23;
-}
-
-.errorNotification .cooldown{
-    background-color: #cb2727;
-}
-
-@keyframes noteMoveUp{
-    0%{left: -300px;}
-    100%{left: 40px;}
-}
-
-@keyframes noteMoveDown{
-    0%{left: 40px;}
-    100%{left: -300px;}
-}
-
-@keyframes cooldownMove{
-    0%{width: 0px;}
-    100%{width: 300px;}
-}
-
-
 
 .mainBox{
     background-color: rgba(26, 0, 82, 0.2);
@@ -214,6 +32,7 @@ input[type=number]::-webkit-inner-spin-button {
     color: rgb(255, 240, 170);
     margin-left: auto;
     margin-right: auto;
+    pointer-events: none;
 }
 
 .formItem{
@@ -238,6 +57,41 @@ input[type=number]::-webkit-inner-spin-button {
     margin-top: 70px;
 }
 
+.shownButton {
+    border-radius: 0px;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 4%;
+    border: none;
+    cursor: pointer;
+    margin-top: -5.5%;
+    
+}
+
+.shownButton:hover{
+    transform: scale(1);
+    background: transparent;
+}
+
+.shownButton:active{
+    cursor: grabbing;
+}
+
+.shownToggle {
+    position: absolute;
+    left: -12px;
+    transform: scale(0.6);
+    transition: all 0.3s;
+}
+
+.shownButton:hover > .shownToggle{
+    color: rgb(250, 240, 170);
+}
 
 .formItem i{
     scale: 1.3;
@@ -303,6 +157,7 @@ input[type=number]::-webkit-inner-spin-button {
 .link:active{
     color: #9b1d11;
     border-color: #9b1d11;
+    cursor: grabbing;
 }
 
 .button{
@@ -324,6 +179,7 @@ button{
     font-family: "Poppins";
     transition: all 0.35s;
     font-weight: 600;
+    cursor: pointer;
 }
 
 button:hover{
@@ -334,6 +190,7 @@ button:hover{
 
 button:active{
     transform: scale(0.85);
+    cursor: grabbing;
 }
 
 

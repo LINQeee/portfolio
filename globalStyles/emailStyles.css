@@ -1,0 +1,122 @@
+.emailContainer input {
+    position: absolute;
+    top: 72%;
+    width: 60%;
+    height: 8%;
+    border-radius: 50px;
+    font-size: 4em;
+    letter-spacing: 3.5vw;
+    font-weight: 700;
+    text-align: center;
+    outline: none;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#emailSubmit {
+    display: block;
+    width: 300px;
+    height: 60px;
+    position: absolute;
+    top: 85%;
+    background-color: #aeeafd;
+    color: #470b9a;
+    border-radius: 100px;
+    margin: auto;
+    border: none;
+    font-size: 2em;
+    font-family: "Poppins";
+    transition: all 0.35s;
+    font-weight: 600;
+}
+
+#emailSubmit:hover {
+    background-color: #122a32;
+    color: #bafffd;
+    scale: 1.1;
+}
+
+#emailSubmit:active {
+    scale: 0.85;
+}
+
+#emailHeader {
+    color: #aeeafd;
+    font-weight: 600;
+    font-size: 2em;
+    position: absolute;
+    top: 55%;
+}
+
+.emailContainer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70vw;
+    height: 85vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 50;
+    border-radius: 35px;
+    scale: 0;
+    transition: all 0.6s;
+    z-index: 100;
+}
+
+.emailContainer i {
+    color: #aeeafd;
+    scale: 15;
+}
+
+#emailIcon {
+    position: absolute;
+    scale: 0;
+    top: 50%;
+    z-index: 10;
+}
+
+@keyframes emailFlyOut {
+    0% {
+        scale: 0;
+        top: 50%;
+    }
+
+    70% {
+        scale: 25;
+    }
+
+    100% {
+        scale: 20;
+        top: 30%;
+    }
+}
+
+#truck {
+    position: absolute;
+    left: 0;
+    scale: 0;
+    z-index: 9;
+    color: #64a4b7;
+}
+
+@keyframes truckDrive {
+    0% {
+        scale: 0;
+        left: 0%;
+    }
+
+    50% {
+        scale: 15;
+        left: 50%;
+    }
+
+    100% {
+        scale: 0;
+        left: 100%;
+    }
+}

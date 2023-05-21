@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather API</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/acaa438d26.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="mainBox">
+        <div class="boxHeader">Weather API <i class="fa-solid fa-cloud"></i></div>
+
+        <div class="boxInput"><input type="text" id="cityInput" required oninput="getWeather()"><span>Your City</span>
+        </div>
+
+        <div class="weatherBox">
+            <div class="timeBox">
+                <span id="time">--:--</span>
+                <span id="date">-</span>
+            </div>
+            <img id="weatherImg" src="//cdn.weatherapi.com/weather/128x128/day/116.png" alt="">
+            <div id="name">-</div>
+            <div id="temp">-°C</div>
+            <div id="status">-</div>
+            <div id="feelsLike">feels like: -°C</div>
+            <div id="direction">wind direction: -</div>
+            <div id="speed">wind speed: - kph</div>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+</body>
+
+</html>

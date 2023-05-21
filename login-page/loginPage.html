@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/globalStyles/emailStyles.css">
+    <link rel="stylesheet" href="/globalStyles/noteStyles.css">
     <script src="https://kit.fontawesome.com/acaa438d26.js" crossorigin="anonymous"></script>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
+
 <body>
-   <!-- <button onclick="showEmailWindow()" style="position:absolute; left: 0; z-index: 1000;">TEST BUTTON</button>-->
+    <!-- <button onclick="showEmailWindow()" style="position:absolute; left: 0; z-index: 1000;">TEST BUTTON</button>-->
     <div id="emailBox" class="emailContainer">
         <i id="emailIcon" class="fa-solid fa-envelopes-bulk"></i>
         <i id="truck" class="fa-solid fa-truck-fast"></i>
         <div id="emailHeader">Check your email and write in the security code</div>
-        <input id="verificationCode" type="number" oninput="setValue('verificationCode', false)" onKeyPress="if(this.value.length==6) return false;" required value="" spellcheck="false" autocomplete="off">
+        <input id="verificationCode" type="number" oninput="setValue(this, false)"
+            onKeyPress="if(this.value.length==6) return false;" required value="" spellcheck="false" autocomplete="off">
         <button id="emailSubmit" onclick="verificationCodeCheck()">SUBMIT</button>
-        
+
     </div>
     <div class="noteContainer">
         <div id="succesNote" class="succesNotification">
@@ -37,39 +42,48 @@
     <div class="mainBox">
         <span id="header" class="header">Login to Your Account</span>
         <form onsubmit="return false">
-        <div id="username" class="formItem">
-            <i class="fa-regular fa-user"></i>
-            <input id="usernameInput" type="text" oninput="setValue('usernameInput', false)" type="text" required value="" spellcheck="false" maxlength="20" autocomplete="off">
-        <div class="inputHead">Username</div>
+            <div id="username" class="formItem">
+                <i class="fa-regular fa-user"></i>
+                <input id="usernameInput" type="text" oninput="setValue(this, false)" type="text" required value=""
+                    spellcheck="false" maxlength="20" autocomplete="off">
+                <div class="inputHead">Username</div>
             </div>
-        <div id="email" class="formItem">
-            <i class="fa-regular fa-envelope"></i>
-            <input id="emailInput" type="text" oninput="setValue('emailInput', false)" type="text" required value="" spellcheck="false" maxlength="20" autocomplete="off">
-            <div class="inputHead">Email</div>
-        </div>
-        <div id="password" class="formItem">
-            <i class="fa-solid fa-lock"></i>
-            <input id="passwordInput" oninput="setValue('passwordInput', true)" type="text" required value="" spellcheck="false" maxlength="20" autocomplete="off">
-            <div class="inputHead">Password</div>
-        </div>
-        <a class="link" href="#" style="display: inline-block; margin-left: 10px; margin-top: 35px;">Forgot Password</a>
-        <div class="additional">
-            <div style="display: inline">
-            <input id="remember" type="checkbox">
-            <label class="check"></label>
-            <div class="additionalText">Remember me</div>
+            <div id="email" class="formItem">
+                <i class="fa-regular fa-envelope"></i>
+                <input id="emailInput" type="text" oninput="setValue(this, false)" type="text" required value=""
+                    spellcheck="false" maxlength="40" autocomplete="off">
+                <div class="inputHead">Email</div>
             </div>
-            <div style="display: inline;">
-            <div id="signAdvice" class="additionalText">Doesn't have an account yet?</div>
-            <a id="signLink" class="link" onclick="switchToRegister()">Sign Up</a>
+            <div id="password" class="formItem">
+                <i class="fa-solid fa-lock"></i>
+                <input id="passwordInput" oninput="setValue(this, true)" type="text" required value=""
+                    spellcheck="false" maxlength="20" autocomplete="off" data-is-shown="false">
+                <div class="inputHead">Password</div>
+                <button class="shownButton" type="button" onclick="setIsChange('passwordInput', this)">
+                    <i class="fa-sharp fa-solid fa-eye-slash shownToggle"></i>
+                </button>
             </div>
-        </div>
-        <div class="button">
-        <button id="submit" type="submit" onclick="submitForm()">login</button>
-        </div>
+            <a class="link" href="/forgot-psw-page/forgotPage.html" style="display: inline-block; margin-left: 10px; margin-top: 35px;">Forgot
+                Password</a>
+            <div class="additional">
+                <div style="display: inline">
+                    <input id="remember" type="checkbox">
+                    <label class="check"></label>
+                    <div class="additionalText">Remember me</div>
+                </div>
+                <div style="display: inline;">
+                    <div id="signAdvice" class="additionalText">Doesn't have an account yet?</div>
+                    <a id="signLink" class="link" onclick="switchToRegister()">Sign Up</a>
+                </div>
+            </div>
+            <div class="button">
+                <button id="submit" type="submit" onclick="submitForm()">login</button>
+            </div>
         </form>
     </div>
 
     <script src="logic.js"></script>
+    <script src="/globalJavaScript/InputSave.js"></script>
 </body>
+
 </html>
